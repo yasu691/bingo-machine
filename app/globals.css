@@ -1,0 +1,46 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #ededed;
+    --foreground: #0a0a0a;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* 抽選番号のアニメーション  */
+@keyframes numberChange {
+  0% {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+  80% {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+  90% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 抽選番号のアニメーションタグ */
+.animate-number-change {
+  animation: numberChange 2.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
