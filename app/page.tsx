@@ -83,6 +83,13 @@ export default function Home() {
     );
     setMaxNumber(newMax);
     setBingoMachine(new BingoMachine(newMax));
+
+    // 最大値変更時は既存の抽選結果もクリア（念のため）
+    if (drawnNumbers.length > 0) {
+      setDrawnNumbers([]);
+      setVisibleNumbers([]);
+      setCurrentNumber(null);
+    }
   };
 
   // 再生する音声を変更する
@@ -108,7 +115,11 @@ export default function Home() {
     setBingoMachine(new BingoMachine(defaultMaxNumber));
     setCurrentNumber(null);
     setDrawnNumbers([]);
-    window.location.reload();
+    setVisibleNumbers([]);
+    setIsInitialRender(false);
+    setIsDrumRoll(false);
+    // LocalStorageもクリア
+    localStorage.removeItem(STORAGE_KEY);
   };
 
   return (
@@ -136,7 +147,7 @@ export default function Home() {
         <button
           onClick={drawNumber}
           className="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-12 py-6 rounded-lg font-bold text-4xl hover:from-blue-600 hover:to-blue-800 duration-200 shadow-md"
-          disabled={isDrumRoll || !bingoMachine.getRemaining().length}
+          disabled={isDrumRoll || drawnNumbers.length >= maxNumber}
         >
           抽選する
         </button>

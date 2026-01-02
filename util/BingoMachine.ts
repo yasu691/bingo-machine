@@ -7,15 +7,15 @@ class BingoMachine {
     }
 
     drawNumber(drawnNumbers: number[]): number | null {
+        // 残りの番号を取得（抽選済みを除外）
+        const remaining = this.numbers.filter(n => !drawnNumbers.includes(n));
+
         // すべての番号が抽選済みの場合は null を返す
-        if (this.numbers.length === drawnNumbers.length) return null;
-        // 未抽選の番号からランダムに番号を選ぶ
-        while (true) {
-            const number = Math.floor(Math.random() * this.numbers.length);
-            if (!drawnNumbers.includes(number)) {
-                return number;
-            }
-        }
+        if (remaining.length === 0) return null;
+
+        // 残り番号からランダムに選択
+        const randomIndex = Math.floor(Math.random() * remaining.length);
+        return remaining[randomIndex];
     }
 
     getRemaining(): number[] {
