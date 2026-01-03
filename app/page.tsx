@@ -89,6 +89,8 @@ export default function Home() {
       setDrawnNumbers([]);
       setVisibleNumbers([]);
       setCurrentNumber(null);
+      // 接待番号もクリア
+      localStorage.removeItem("bingoSettaiNumber");
     }
   };
 
@@ -98,8 +100,17 @@ export default function Home() {
   };
 
   const drawNumber = () => {
-    // 番号を抽選する
-    const number = bingoMachine.drawNumber(drawnNumbers);
+    // LocalStorageから接待番号を取得
+    const settaiNumberStr = localStorage.getItem("bingoSettaiNumber");
+    const settaiNumber = settaiNumberStr ? parseInt(settaiNumberStr) : null;
+
+    // 接待番号を使用する場合は削除（ワンタイム）
+    if (settaiNumber !== null) {
+      localStorage.removeItem("bingoSettaiNumber");
+    }
+
+    // 番号を抽選する（接待番号があればそれを優先）
+    const number = bingoMachine.drawNumber(drawnNumbers, settaiNumber);
 
     // 番号があれば、現在の番号として設定し、既に抽選された番号に追加する
     if (number) {
@@ -120,6 +131,8 @@ export default function Home() {
     setIsDrumRoll(false);
     // LocalStorageもクリア
     localStorage.removeItem(STORAGE_KEY);
+    // 接待番号もクリア
+    localStorage.removeItem("bingoSettaiNumber");
   };
 
   return (
