@@ -6,7 +6,19 @@ class BingoMachine {
         this.numbers = Array.from({length: maxNumber}, (_, i) => i + 1);
     }
 
-    drawNumber(drawnNumbers: number[]): number | null {
+    drawNumber(drawnNumbers: number[], forcedNumber?: number | null): number | null {
+        // 接待番号が指定されている場合
+        if (forcedNumber !== undefined && forcedNumber !== null) {
+            // バリデーション: 範囲内かチェック
+            if (forcedNumber >= 1 && forcedNumber <= this.numbers.length) {
+                // 未抽選かチェック
+                if (!drawnNumbers.includes(forcedNumber)) {
+                    return forcedNumber;
+                }
+            }
+            // 無効な場合は下のランダム抽選にフォールバック
+        }
+
         // 残りの番号を取得（抽選済みを除外）
         const remaining = this.numbers.filter(n => !drawnNumbers.includes(n));
 
